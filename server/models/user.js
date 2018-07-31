@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
-let schema = mongoose.Schema
+let Schema = mongoose.Schema
+
+const emailValidator = function(email) {
+    return /^\w([.!#$%&’*+/=?^_`{|}~-]*?\w+)+@\w+(\.\w{2,3})+$/.test(email);
+  };
+    
 
 let userSchema = new Schema (
     {

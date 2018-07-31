@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-let schema = mongoose.Schema
+let Schema = mongoose.Schema
 
 let todoSchema = new Schema (
     {
@@ -15,7 +15,7 @@ let todoSchema = new Schema (
         completed: {
             type: Boolean,
             required: true,
-            default: false
+            default: 0
         },
         tags: {
             type: Array,
