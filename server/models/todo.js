@@ -4,25 +4,22 @@ let schema = mongoose.Schema
 
 let todoSchema = new Schema (
     {
-        todo: {
-            type: String,
-            required: true,
-            validate: emailValidator
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "users"
         },
-        password: {
+        task: {
             type: String,
-            required: true,
-            validate: emailValidator
+            required: [true, "task is required"],
         },
-        name: {
-            type: String,
+        completed: {
+            type: Boolean,
             required: true,
-            validate: emailValidator
+            default: false
         },
-        todos: {
-            type: String,
-            required: true,
-            validate: emailValidator
+        tags: {
+            type: Array,
+            default: []
         },
     }
 )

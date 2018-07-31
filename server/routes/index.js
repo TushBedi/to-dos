@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const loginController = require("../controllers/loginController");
-const authentication = require("../controllers/authentication");
+const authentication = require("../middlewares/authentication");
 
 /* GET home page. */
 router.get('/', function(req, res) {
