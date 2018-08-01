@@ -19,4 +19,4 @@ yarn-error.log*
 
 firebase.js
 
-*node_modules
+node_modules
