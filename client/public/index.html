@@ -14,9 +14,10 @@
   <title>To Do List</title>
 </head>
 
-<!--  -->
-
 <body>
+
+  <!-- Navbar Header -->
+
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-between">
       <a class="navbar-brand" id="todo-header"href="#">Your To-Do List</a>
@@ -41,7 +42,7 @@
       </div>
     </nav>
 
-<!--  -->
+<!-- Login -->
 
     <div v-if="!isRegister && !isLoggedIn" id="login">
       <h3><b>Login</b></h3>
@@ -62,12 +63,12 @@
       <br>
       <hr>
       <br>
-      <!-- <button @click="loginFB" class="btn btn-primary" id="fb-login" scope="public_profile,email" onlogin="checkLoginState();">
+      <button @click="loginFB" class="btn btn-primary" id="fb-login" scope="public_profile,email" onlogin="checkLoginState();">
         Continue with Facebook
-      </button> -->
+      </button>
     </div>
 
-<!--  -->
+<!-- Register -->
 
     <div v-if="isRegister && !isLoggedIn" id="register">
       <h3><b>Register</b></h3>
@@ -91,7 +92,7 @@
       </small>
     </div>
 
-<!--  -->
+<!-- Get Todos -->
 
     <div v-if="isLoggedIn" id="todo-list">
       <h4>Your To Do List</h4>
@@ -104,7 +105,7 @@
           </div>
           <div class="list-footer d-flex justify-content-between">
             <div>
-              <small>tags: </small>
+              <small>Tags: </small>
               <small v-for="(tag, index) in todo.tags">
                 {{ tag }}
               </small>
@@ -120,7 +121,7 @@
       </ul>
     </div>
 
-<!--  -->
+<!-- Add Todo -->
 
     <div v-if="isLoggedIn" id="addModal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -148,6 +149,8 @@
         </div>
       </div>
     </div>
+
+<!-- Update Todo -->
 
     <div v-if="isLoggedIn" id="editModal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">

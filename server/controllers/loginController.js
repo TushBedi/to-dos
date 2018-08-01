@@ -45,10 +45,11 @@ module.exports = {
     let userId = req.body.userId;
     let email = req.body.email;
 
-    user.findOne({ email: req.body.email }, (err, response) => {
+    user.findOne({ email: email }, (err, response) => {
       if (err) {
         console.log(err);
       } else {
+        // console.log(response._id)
 
         let token = jwt.sign({ userId: response._id }, process.env.SECRET_KEY);
 

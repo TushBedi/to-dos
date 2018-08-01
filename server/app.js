@@ -39,6 +39,8 @@ app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log('masuk sini');
+  
   next(createError(404));
 });
 

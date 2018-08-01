@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 
 // login/signup routes
 router.post('/signup', loginController.signup)
-router.post('/login', loginController.signin)
+router.post('/login', authentication, loginController.signin)
 router.post('/login-fb', loginController.fblogin)
 
 module.exports = router;

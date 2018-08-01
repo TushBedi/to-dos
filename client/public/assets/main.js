@@ -16,6 +16,7 @@ new Vue({
       search: "",
       user: ""
     },
+
     methods: {
       login: function() {
         let payload = {
@@ -70,6 +71,7 @@ new Vue({
               localStorage.setItem("name", data.name);
               this.user = data.name;
               localStorage.setItem("token", data.token);
+              // console.log(this.password)
               this.getTodos();
               this.cleanInput();
               this.isRegister = false;
@@ -93,48 +95,48 @@ new Vue({
           });
       },
 
-    //   loginFB: function() {
-    //     let provider = new firebase.auth.FacebookAuthProvider()
-    //     let self = this;
-    //     firebase.auth().signInWithPopup(provider).then(function (result) {
-    //       let user = result.user
-    //       let payload = {
-    //         name: user.displayName,
-    //         email: user.email,
-    //         password: user.email.slice(0, 8)
-    //       }
-    //       axios
-    // // CHANGE THIS
-    //       .post("https//server-todo.mcang.ml/login-fb", payload)
-    //       .then(({ data }) => {
-    //         if (data.token) {
-    //           self.isLoggedIn = true;
-    //           localStorage.setItem("name", data.name);
-    //           self.user = data.name;
-    //           localStorage.setItem("token", data.token);
-    //           self.getTodos();
-    //           self.cleanInput();
-    //           swal({
-    //             title: "Login with FB Success!",
-    //             text: "Your account password is first 8 character of your email",
-    //             icon: "success"
-    //           });
-    //         } else {
-    //           swal({
-    //             title: "Warning!",
-    //             text: data.err.message,
-    //             icon: "warning"
-    //           });
-    //         }
-    //       })
-    //       .catch(err => {
-    //         console.log(err);
-    //       });
-    //     }).catch(function (error) {
-    //       let errorMessage = error.message
-    //       swal(JSON.stringify(errorMessage))
-    //     })
-    //   },
+      loginFB: function() {
+        let provider = new firebase.auth.FacebookAuthProvider()
+        let self = this;
+        firebase.auth().signInWithPopup(provider).then(function (result) {
+          let user = result.user
+          let payload = {
+            name: user.displayName,
+            email: user.email,
+            password: user.email.slice(0, 8)
+          }
+          axios
+    // CHANGE THIS
+          .post("http://localhost:3000/login-fb", payload)
+          .then(({ data }) => {
+            if (data.token) {
+              self.isLoggedIn = true;
+              localStorage.setItem("name", data.name);
+              self.user = data.name;
+              localStorage.setItem("token", data.token);
+              self.getTodos();
+              self.cleanInput();
+              swal({
+                title: "Login with FB Success!",
+                text: "Your account password is first 8 character of your email",
+                icon: "success"
+              });
+            } else {
+              swal({
+                title: "Warning!",
+                text: data.err.message,
+                icon: "warning"
+              });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        }).catch(function (error) {
+          let errorMessage = error.message
+          swal(JSON.stringify(errorMessage))
+        })
+      },
 
       getTodos: function() {
         let token = localStorage.getItem("token");
@@ -147,7 +149,6 @@ new Vue({
           }
         }).then(response => {
           this.todos = response.data.todos
-          console.log(this.todos)
         }).catch(err => {
           console.log(err);
         })
@@ -192,20 +193,21 @@ new Vue({
       },
 
       updateTodo: function() {
+        console.log('test from client')
         let token = localStorage.getItem("token");
-        // console.log(token)
         let config = { headers: { token } };
         let itemId = this.editItemId;
+        // console.log("This is the item id -->", itemId)
         let payload = {
           addTags: this.addTags.split(" "),
           removeTags: this.removeTags.split(" ")
         };
         if (this.updateItem !== "") {
-          payload.action = this.updateItem;
+          payload.task = this.updateItem;
         }
         axios
 //CHANGE THIS
-          .put(`http://localhost:3000/user/${itemId}`, payload, config)
+          .put(`http://localhost:3000/user/todo/${itemId}`, payload, config)
           .then(({ data }) => {
             console.log(data);
             this.getTodos();
@@ -242,7 +244,6 @@ new Vue({
       },
 
       updateStatus: function(itemId, statusUpdate) {
-        
         let update = { completed: statusUpdate };
         let token = localStorage.getItem("token");
         let config = { headers: { token } };

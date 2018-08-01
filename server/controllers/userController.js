@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require ("jsonwebtoken");
-const  Todo  = require ("../models/todo")
-const { user } = require ("../models/user")
+const Todo  = require ("../models/todo")
+const user = require ("../models/user")
 
 module.exports = {
 
@@ -83,6 +83,7 @@ module.exports = {
     updateTodo: function (req,res) {
         let todoId = req.params.todoId;
         let updatedTodo = req.body;
+        console.log("---->",req.body)
         Todo
             .findByIdAndUpdate(todoId, { $set: updatedTodo }, { new: true })
             .then(todo => {
