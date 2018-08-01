@@ -11,23 +11,23 @@ let userSchema = new Schema (
     {
         email: {
             type: String,
-            required: true,
-            validate: emailValidator
+            required: [true, "email is required"],
+            validate: [emailValidator, "invalid email type"],
         },
         password: {
             type: String,
             required: true,
-            validate: emailValidator
         },
         name: {
             type: String,
-            required: true,
-            validate: emailValidator
-        },
-        todos: {
-            type: String,
-            required: true,
-            validate: emailValidator
-        },
+            required: true
+        }
+        // },
+        // todos: [{
+        //     type: Schema.Types.ObjectId,
+        //     ref: "todos",
+        // }],
     }
 )
+
+module.exports = mongoose.model("user", userSchema)

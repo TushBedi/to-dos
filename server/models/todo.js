@@ -4,22 +4,15 @@ let Schema = mongoose.Schema
 
 let todoSchema = new Schema (
     {
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: "users"
-        },
-        task: {
-            type: String,
-            required: [true, "task is required"],
-        },
-        completed: {
-            type: Boolean,
-            required: true,
-            default: 0
-        },
-        tags: {
-            type: Array,
-            default: []
-        },
+        user: { type: Schema.Types.ObjectId, ref: 'user' },
+        task: { type:String },
+        completed: false,
+        tags: [],
+    }, {
+        timestamps: true
     }
 )
+
+const Todo = mongoose.model('Todo', todoSchema)
+
+module.exports = Todo

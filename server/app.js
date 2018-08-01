@@ -1,12 +1,15 @@
+require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
+const mongoose = require('mongoose')
+
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const userRouter = require('./routes/user');
 
 const app = express();
 
@@ -23,7 +26,7 @@ app.use(cors())
 
 const { DB_USER, DB_PASS } = process.env;
 
-const url = `ds261521.mlab.com:61521/fancy-todos-db`
+const url = `mongodb://${DB_USER}:${DB_PASS}@ds261521.mlab.com:61521/todos-server`
 
 // mongoose
 mongoose.connect(url)
@@ -32,7 +35,7 @@ mongoose.connect(url)
   });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

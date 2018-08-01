@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { user } = require("../models");
+// const { todo } = require("../models/todo");
+
 
 module.exports = {
   signup: function(req, res) {
@@ -38,17 +40,29 @@ module.exports = {
       }
     });
   },
+
   signin: function(req, res) {
     let userId = req.body.userId;
-    let name = req.body.name;
-    let token = jwt.sign({ userId }, process.env.SECRET_KEY);
-    res.status(200).json({
-      message: "successfully sign in",
-      token,
-      name
-    });
+    let email = req.body.email;
+
+    user.findOne({ email: req.body.email }, (err, response) => {
+      if (err) {
+        console.log(err);
+      } else {
+
+        let token = jwt.sign({ userId: response._id }, process.env.SECRET_KEY);
+
+        res.status(200).json({
+          message: "successfully sign in",
+          token,
+          name: response.name
+        });       
+      }
+    })
+    
   },
-  fbLogin: function(req, res) {
+
+  fblogin: function(req, res) {
     user
       .findOne({ email: req.body.email })
       .then(result => {
@@ -62,7 +76,7 @@ module.exports = {
             name
           });
         } else {
-          let salt = bcrypt.genSaltSync(7);
+          let salt = bcrypt.genSaltSync(10);
           let hash = bcrypt.hashSync(req.body.password, salt);
           user
             .create({
@@ -75,7 +89,7 @@ module.exports = {
               let name = newUser.name;
               let token = jwt.sign({ userId }, process.env.SECRET_KEY);
               res.status(201).json({
-                msg: "add new user",
+                msg: "added new user",
                 token,
                 name
               });

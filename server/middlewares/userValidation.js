@@ -6,6 +6,7 @@ module.exports = function(req, res, next) {
     if (token) {
         let decoded = jwt.verify(token, process.env.SECRET_KEY);
         req.body.userId = decoded.userId;
+        
         next();
     }
     else {

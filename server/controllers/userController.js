@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require ("jsonwebtoken");
-const { user, todo } = require ("../models")
+const  Todo  = require ("../models/todo")
+const { user } = require ("../models/user")
 
 module.exports = {
 
@@ -10,8 +11,8 @@ module.exports = {
         if (req.query.tag) {
             params.tags = { $in: req.query.tag }
         }
-        console.log(params);
-        todo
+        console.log('params get todos');
+        Todo
             .find (params)
             .sort ({completed: 1, createdAt: -1})
             .then (todos => {
@@ -29,31 +30,52 @@ module.exports = {
 
     //add todo
     addTodo: function (req,res) {
-        let userId = req.body.userId;
-        let task = req.body.task;
-        let tags = req.body.tags;
-        todo
-            .creat({ user: userId, task, tags })
-            .then(todo => {
-                user
-                    .findByIdAndUpdate (
-                        userId,
-                        { $push: { todos: todo._id } },
-                        { new: true }
-                    )
-                    .then (affectedUser => {
-                        res.status(201).json ({
-                            msg: "successfully add new task to do list",
-                            affectedUser,
-                            todo
-                        });
-                    });
-            })
-            .catch (err => {
-                if (err) {
-                    res.send(err.errors);
-                }
-            });
+        // let userId = req.body.userId;
+        // let task = req.body.task;
+        // let tags = req.body.tags;
+
+        const newTodo = {
+            user: req.body.userId,
+            task: req.body.task,
+            tags: req.body.tags,
+            completed: false
+        }
+
+        console.log(req.body);
+
+        Todo.create(newTodo, (err, response) => {
+            if(err){
+                console.log(err);
+            } else {
+                res.status(201).json({
+                    msg: "successfully add new task to do list",
+                    response
+                })
+            }
+        })
+        
+        // todo
+        //     .create({ user: userId, task, tags })
+        //     .then(todo => {
+        //         user
+        //             .findByIdAndUpdate (
+        //                 userId,
+        //                 { $push: { todos: todo._id } },
+        //                 { new: true }
+        //             )
+        //             .then (affectedUser => {
+        //                 res.status(201).json ({
+        //                     msg: "successfully add new task to do list",
+        //                     affectedUser,
+        //                     todo
+        //                 });
+        //             });
+        //     })
+        //     .catch (err => {
+        //         if (err) {
+        //             res.send(err.errors);
+        //         }
+        //     });
 
     },
 
@@ -61,7 +83,7 @@ module.exports = {
     updateTodo: function (req,res) {
         let todoId = req.params.todoId;
         let updatedTodo = req.body;
-        todo
+        Todo
             .findByIdAndUpdate(todoId, { $set: updatedTodo }, { new: true })
             .then(todo => {
                 let addTags = req.body.addTags;
@@ -95,7 +117,7 @@ module.exports = {
     //delete todo
     deleteTodo: function (req, res) {
         let todoId = req.params.todoId;
-        todo
+        Todo
             .findByIdAndRemove(todoId)
             .then(todo => {
                 res.status(200).json({

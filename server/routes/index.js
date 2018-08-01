@@ -10,8 +10,8 @@ router.get('/', function(req, res) {
 });
 
 // login/signup routes
-router.post('/signup', loginController.signUp)
-router.post('/login', authentication, loginController.logIn)
-router.post('/login-fb', loginController.fbLogin)
+router.post('/signup', loginController.signup)
+router.post('/login', loginController.signin)
+router.post('/login-fb', loginController.fblogin)
 
 module.exports = router;
